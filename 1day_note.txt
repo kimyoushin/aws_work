@@ -1,0 +1,86 @@
+1일차 주요 내용
+
+WS Account
+Account ID
+
+451750060695
+Account Alias
+aws-kimyoushin-iam
+Edit
+|
+Delete
+Sign-in URL for IAM users in this account
+
+https://aws-kimyoushin-iam.signin.aws.amazon.com/console
+
+https://aws-kimyoushin-iam.signin.aws.amazon.com/console
+
+foundational
+associate
+professional
+
+private cloud
+vmware
+citrix
+
+public cloud
+
+클라우드 컴퓨팅
+온디맨드 서비스 액세스
+대규모 사전 투자 방지
+필요에 따라 컴퓨팅 리소스 프로비저닝
+사용한 만큼만 비용을 지불
++
+프로그래밍 가능한 인프라
+
+datacenter < AZ (available zone) < region
+
+
+Amazon Elastic Compute Cloud (Amazon EC2)
+
+
+Compute Savings Plans
+인스턴스 type, 리전 변경 사용가능
+Serverless comput (Fargate 또는 Lambda)
+
+스팟
+가장 할인율 높은 ec2
+
+
+Lambda
+서버를 프로비저닝
+
+
+엣지 로케이션 : CDN. 캐싱 데이터
+
+
+
+관리 콘솔
+cli
+sdk
+
+
+리전은 세 개 이상의 가용 영역으로 구성됩니다
+
+CloudFront - 글로벌 콘텐츠 전송 네트워크(CDN) 서비스
+엣지 로케이션
+
+NACL(네트워크 액세스 제어 목록)
+상태 비저장
+allow / deny 명시
+subnet 보안
+
+SG(보안그룹)
+모든 아웃바운드는 허용
+상태 저장
+허용 된 것만 통과(모든 인바운드는 비허용)
+EC2 보안
+allow 
+
+https://bit.ly/Edu-koreait
+https://in-chul-shin.gitbook.io/edu-koreait
+
+
+client           cloudfront --------- application load balance -------- ec2 auto scaling 그룹 (subnet)
+                  aws router 53                                                     ec2 .....
+

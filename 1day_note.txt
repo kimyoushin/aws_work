@@ -84,3 +84,14 @@ https://in-chul-shin.gitbook.io/edu-koreait
 client           cloudfront --------- application load balance -------- ec2 auto scaling 그룹 (subnet)
                   aws router 53                                                     ec2 .....
 
+
+
+VS Code 실행
+Extension plugin 설치
+1. Remote Explorer
+2. Remote ssh
+3. ssh config 내용
+Host 15.165.59.12
+    HostName 15.165.59.12
+    User ec2-user
+    IdentityFile C:\Users\402501\.ssh\kimyoushin-keypair.pem

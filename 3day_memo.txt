@@ -1,0 +1,99 @@
+이점
+글로벌 데이터 센터
+서비스 200개 이상
+보안 및 안정성
+종량제
+비즈니스요구 사항에 따라 구축
+
+
+고객이 AWS 로 이전하는 이유
+민첩성 
+출시 시간 단축
+혁신 확대
+원할한 크기 조정
+
+복잡성 및 위험
+비용최적화
+보안 취약성 최소화
+복잡한 관리 작업 감소
+
+
+데이터센터
+가용영역
+리전
+로컬영역
+엣지로케이션
+
+
+가용영역:
+리전내의 데이터센터
+내결함성을 갖도록 설계됨
+고속 프라이빗 링크를 사용하여 상호 연결됨
+고가용성 달성에 사용됨
+
+
+리전 선택에 영향을 미치는 요인
+거버넌스
+지연시간
+서비스 가용성
+비용
+
+
+AWS Local Zones : 
+에지의 AWS 인프라
+로컬 컴퓨팅,스토리지,데이터베이스 및 기타 서비스
+AWS 리전의 서비스에 연결
+지연 시간이 짧은 신규 애플리케이션 제공
+
+사용 사례 : 
+미디어 및 언터테인먼트 콘텐츠 생성
+실시간 게임
+기계 학습 추론
+라이브 비디오 스트리밍
+증강현실 및 가상현실
+
+
+엣지 로케이션의 특성
+전 세계 주요 도시에서 운영
+Amazon Route 53 및 Amazon CloudFront 와 같은 AWS 서비스 지원
+CDN
+
+
+
+짧은 지연 시간
+로컬 데이터 처리
+일관된 AWS 경험
+
+
+user
+user group
+policy
+role
+
+사용자,그룹 및 역할 생성과 관리
+AWS 서비스와 리소스 액세스 관리
+액세스 제어 분석
+
+리소스,자격증명(로그인)
+
+
+Amazon VPC
+서브넷
+인터넷 게이트웨이
+라우팅 테이블
+탄력적 IP 주소
+탄력적 네트워크 인터페이스
+NAT 게이트웨이
+
+
+
+
+aws ec2 create-vpc --instance-tenancy "default" --cidr-block "10.0.0.0/16" --tag-specifications '{"resourceType":"vpc","tags":[{"key":"Name","value":"koreait"}]}' 
+
+
+aws ec2 attach-internet-gateway --vpc-id "vpc-07ec83c56d94bbadc" --internet-gateway-id "igw-0cee2ae7e908f5952" --region ap-northeast-2
+
+10.0.2.0/24
+
+아키텍처 그리기
+https://aws.amazon.com/ko/architecture/icons/

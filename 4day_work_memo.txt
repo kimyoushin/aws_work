@@ -1,0 +1,134 @@
+EC2 인스턴스 시작(프로비즈닝)
+스크립트 및 메타데이터
+배치 및 테넌시
+스토리지
+네트워크 및 보안
+키페어
+인스턴스 유형 및 크기
+애플리케이션 및 OS 이미지
+이름 및 태그
+
+AMI 받을 수 있는 
+AWS
+Marketplace
+Custom (EC2 인스턴스 복제) - AMI를 수동으로 직접 생성하거나 EC2 Image Builder 사용
+
+
+AWS Compute Optimizer
+기계학습, CloudWatch 데이터 기반 서비스
+
+
+테넌시
+공유 테넌시 : 하드웨어를 공유합니다
+전용 인스턴스 : 하드웨어를 격리합니다
+전용 호스트 : 하드웨어를 제어합니다
+
+
+배치그룹 및 사용사례
+
+클러스터
+분산형
+파티션 : sharding
+
+인스턴스 메타데이터
+
+169.254.169.254 : aws hypervisor ip
+
+하나 이상의 EBS 볼륨을 단일 EC2 인스턴스에 연결합니다.
+여러개의 EC2 인스턴스가 동일한 EBS 볼륨을 사용할 수는 없다 ==> io2 Block Express (동일한 AZ 에서는 가능)
+
+IOPS 
+1GB=3 IOPS
+10 = 30
+100 = 300
+
+EC2 구매 옵션
+온디맨드
+장기 약정 없이 초당 또는 시간당 사용하는 컴퓨팅 용량에 해당하는 요금 결제
+변화가 심한 워크로드 또는 임시 요구 사항.빨리 사용
+
+Savings Plans
+Savings Plan 유형에 따라 다양한 유연성을 갖춘 1년 또는 3년 약정
+Compute Saings Plans
+최고의 유연성, 온디맨드 요금 대비 최대 66%할인 혜택, 비용 절감효과는 없다.유연성은 있다
+AWS Fargate 및 AWS Lambda 사용시 적용 가능
+EC2 Instance Savings Plans
+요금이 가장 저렴합니다. 특정 AWS 리전의 일부 인스턴스 패밀리에서는 온디맨드 요금이 최대 72% 할인됩니다. 비용절감 효과 있다
+가용영역 , 크기, OS,
+
+스팟 인스턴스
+온디맨드 비용에서 최대 90%할인 혜택을 받아 여분의 Amazon EC2 ㅇㅇ량 사용 가능
+내결함성,유연성,상태 비저장 워크로드
+사용사례 : 이미지 및 미디어 렌더링, 웹서비스, 빅 데이터 및 분석
+
+
+
+블록(EBS) : 하드 디스크, 스토리지 영역 네트워크(SAN), 스토리지 어레이, 공유불가
+파일(EFS) : 네트워크 연결 스토리지(NAS) 어플라이스, 공유가능
+객체(S3)
+리소스 제어
+
+
+서버 측 암호화 키 유형
+S3 버킷에서 객체를 암호화하는 방법 선택
+Amazon S3 관리형 키(SSE-S3)
+AWS KMS 키(SSE-KMS)
+이중계층 서버 측 암호화(DSSE-KMS)
+고객제공 키(SSE-C)
+
+amazon s3 스토리지 클래스
+S3 standard
+S3 standard-IA
+S3 One Zone-IA
+S3 Glacier 
+
+amazon S3 Intelligent-Tiering
+
+S3 Glacier 이점
+비용 효율적 스토리지 
+유동적인 데이터 검색
+보안 및 규정 준수
+
+amazon s3 버전 관리
+
+
+amazon s3 객체 복제
+
+amazon s3 비용관련 요인
+유형
+검색
+전송
+
+공유파일시스템(EFS) 
+
+EFS 이점
+
+데이터 마이그레이션 도구
+"어떻게 하면 비교적 짧은 시간 내에 대량의 데이터를 클라우드로 옮길 수 있을까요?"
+온라인 도구
+Storage gateway
+datasync
+transfer family
+오프라인 도구
+snow family(snow con, snow ball)
+
+CPR (다른 리전 복사)
+
+172.31.0.0/20
+
+git commit -m "index.html add commit"
+…or create a new repository on the command line
+echo "# Github-Action-S3-koreait" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/kimyoushin/Github-Action-S3-koreait.git
+git push -u origin main
+…or push an existing repository from the command line
+git remote add origin https://github.com/kimyoushin/Github-Action-S3-koreait.git
+git branch -M main
+git push -u origin main
+
+
+git commit -m "github action commit"

@@ -1,0 +1,155 @@
+cd ~/techcamp/lambdas
+export BEDROCK_REGION_NAME=ap-northeast-2 && echo $BEDROCK_REGION_NAME
+export ROLE_ARN=$(aws iam get-role --role-name TechCamp-LambdaFunc-Role --query 'Role.Arn' --output text) && echo $ROLE_ARN
+export BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name koreait-bedrock --query 'Stacks[0].Outputs[?OutputKey==`BucketName`].OutputValue' --output text) && echo $BUCKET_NAME
+export MEDIA_CONVERT_ROLE=$(aws cloudformation describe-stacks --stack-name koreait-bedrock --query 'Stacks[0].Outputs[?OutputKey==`MediaConvertRoleArn`].OutputValue' --output text) && echo $MEDIA_CONVERT_ROLE
+export SUBNET_IDS=$(aws cloudformation describe-stacks --stack-name koreait-bedrock --query 'Stacks[0].Outputs[?OutputKey==`SubnetIds`].OutputValue' --output text) && echo $SUBNET_IDS
+export LAMBDA_SG_ID=$(aws cloudformation describe-stacks --stack-name koreait-bedrock --query 'Stacks[0].Outputs[?OutputKey==`LambdaSecurityGroupId`].OutputValue' --output text) && echo $LAMBDA_SG_ID
+
+cd 1_summaryfunc
+zip function.zip lambda_handler.py
+aws lambda create-function \
+--function-name summaryfunc \
+--runtime python3.12 \
+--zip-file fileb://function.zip \
+--handler lambda_handler.handler \
+--timeout 900 \
+--environment "Variables={BEDROCK_REGION_NAME=$BEDROCK_REGION_NAME}" \
+--role $ROLE_ARN \
+--vpc-config "SubnetIds=$SUBNET_IDS,SecurityGroupIds=$LAMBDA_SG_ID,Ipv6AllowedForDualStack=false" > /dev/null
+
+cd ../2_shortformfunc
+zip function.zip lambda_handler.py
+aws lambda create-function \
+--function-name shortformfunc \
+--runtime python3.12 \
+--zip-file fileb://function.zip \
+--handler lambda_handler.handler \
+--timeout 900 \
+--environment "Variables={BEDROCK_REGION_NAME=$BEDROCK_REGION_NAME,BUCKET_NAME=$BUCKET_NAME,MEDIA_CONVERT_ROLE=$MEDIA_CONVERT_ROLE}" \
+--role $ROLE_ARN \
+--vpc-config "SubnetIds=$SUBNET_IDS,SecurityGroupIds=$LAMBDA_SG_ID,Ipv6AllowedForDualStack=false" > /dev/null
+
+
+cd ~/environment/techcamp/app
+pip3 install -r requirements.txt
+
+
+
+export ALB_URL=$(aws cloudformation describe-stacks --stack-name koreait-bedrock --query 'Stacks[0].Outputs[?OutputKey==`ALBURL`].OutputValue' --output text) && echo $ALB_URL
+export BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name koreait-bedrock --query 'Stacks[0].Outputs[?OutputKey==`BucketName`].OutputValue' --output text) && echo $BUCKET_NAME
+
+export SG_ID=$(aws ec2 describe-security-groups --filters Name=group-name,Values=*TechCamp* --query 'SecurityGroups[*].{ID:GroupId}' --output text)
+aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8501 --cidr 0.0.0.0/0
+
+cd ~/environment/techcamp
+streamlit run app/Home.py
+export SG_ID=$(aws ec2 describe-security-groups --filters Name=group-name,Values=*techcamp* --query 'SecurityGroups[*].{ID:GroupId}' --output text)
+aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8501 --cidr 0.0.0.0/0
+
+cd ~/environment/techcamp
+streamlit run app/Home.py
+
+
+
+
+
+신인철
+tudulius@hanmail.net
+
+AI Agent
+
+Grok3 
+Local LLM -> Deepseek R3
+
+
+chgroot
+cgroup
+namespace
+
+sudo reboot
+
+https://seosh817.tistory.com/387 docker-compse 개념 정리 사이트
+1. https://docs.docker.com/compose/install/
+2. Standalone
+2.1 sudo curl -SL https://github.com/docker/compose/releases/download/v2.33.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+2.2 sudo chmod +x /usr/local/bin/docker-compose
+3. docker-compose version
+
+
+
+docker-compse up -d
+오류발생시
+1. Security Group 확인
+2. EC2 80 Port 충돌
+   sudo systemctl stop httpd
+
+
+사이트제목 : koreait-docker-wordpress
+사용자명 : kimyoushin
+비밀번호 : 
+
+$ sudo cadvisor
+
+
+지식 기반 & 에이전트 
+: 고도의 AI App을 복잡한 코드를 쓰지 않고 간단하게 만들수 있음
+
+파인튜닝 & 사전학습
+: 목적분량의 데이터를 대량으로 가져와서 모델을 학습시킬 수 있습니다
+
+가드레일
+: AI 가 위험한 일이 없도록 제어할 수 있습니다.
+
+모형 평가
+
+지식 베이스 for Amazon Bedrock
+AI에게 문서를 검색하게 하는 "RAG 검색을 통해 강화된 생성"을 실현하는 기능
+
+
+OpenSearch -> 벡터 DB
+
+
+CIDR 쉽게 계산하는 방법 (예시1)
+192.168.207.2/22
+192(옥텟1).168(옥텟2).207(옥텟3).2(옥텟4)/22(비트)
+
+/ 뒤에 숫자를 32로 뺀다. 32-22= 10
+(1)번에서 나온 숫자가 8이상인 경우 8보다 작아질때 까지 뺀다. 10-8=2 (뺀 횟수를 기억한다)
+(2)번에서 나온 숫자 2를 2의 2승을 한다. 2x2=4 (와일드카드를 구하는 과정임 즉 최대 4개의 IP를 가질 수 있다)
+와일드카드 값인 4는 옥텟 1개가 가질 수 있는 최대 범위 0~255를 64개로 분할한 것을 의미한다
+(0~3, 4~7, 8~11, 12~15.....200~203, 204~207.....252~255 의 범위를 가진다)
+(2)번에서 8을 1회 뺏다면 옥텟3의 값인 207을 확인한다. 이 값이 (4)번 와일드카드의 범위 어디에 포함되어있는지 알아내면 끝이다.
+(0회 일경우=옥텟4, 1회 일경우=옥텟3, 2회 일경우=옥텟2, 3회일 경우 = 옥텟1 을 보면됨)
+옥텟3의 값 207이 0보다 256에 더 가깝기 때문에 뒤에서부터 4를 13번 빼주면 256-(-4x13)=204 가 되고 204-207 범위내에 포함되어있다. 옥텟3의 최소값은 204이며 최대값은 207이다. 그 아래 옥텟4의 값의 최소값은 0이며 최대값은 255이다.
+따라서 192.168.204.0 ~ 192.168.207.255
+CIDR 쉽게 계산하는 방법 (예시2)
+192.168.207.227/25
+192(옥텟1).168(옥텟2).207(옥텟3).227(옥텟4)/25(비트)
+
+/ 뒤에 숫자를 32로 뺀다. 32-25= 7
+(1)번에서 나온 숫자가 8이상인 경우 8보다 작아질때 까지 뺀다. 8이하 이므로 그냥 7 (뺀 횟수를 기억한다)
+(2)번에서 나온 숫자 7를 2의 7승을 한다. 2x2x2x2x2x2x2= 128 (와일드카드를 구하는 과정임 즉 최대 128개의 IP를 가질 수 있다)
+와일드카드 값인 128는 옥텟 1개가 가질 수 있는 최대 범위 0~255를 2개로 분할한 것을 의미한다
+(0~127, 128~255 의 범위를 가진다)
+(2)번에서 8을 0회 뺏다면 옥텟4의 값인 227을 확인한다. 이 값이 (4)번 와일드카드의 범위 어디에 포함되어있는지 알아내면 끝이다.
+(0회 일경우=옥텟4, 1회 일경우=옥텟3, 2회 일경우=옥텟2, 3회일 경우 = 옥텟1 을 보면됨)
+이 예제는 딱봐도 옥텟4의 값 227이 128~255에 포함된다. 옥텟4은 최소값 0부터 시작하며 최대값은 255이다.
+따라서 192.168.207.128 ~ 192.168.207.255
+마지막으로 한번 더 해볼까요?
+
+CIDR 쉽게 계산하는 방법 (예시3)
+192.1.207.2/13
+92(옥텟1).1(옥텟2).207(옥텟3).2(옥텟4)/22(비트)
+
+/ 뒤에 숫자를 32로 뺀다. 32-13= 19
+(1)번에서 나온 숫자가 8이상인 경우 8보다 작아질때 까지 뺀다. 19-8=11 ,11-8=3 (뺀 횟수를 기억한다)
+(2)번에서 나온 숫자 3을 2의 3승을 한다. 2x2x2= 8 (와일드카드를 구하는 과정임 즉 최대 8개의 IP를 가질 수 있다)
+와일드카드 값인 8은 옥텟 1개가 가질 수 있는 최대 범위 0~255를 32개로 분할한 것을 의미한다
+(0~7, 8~15, 16~23, 24~31...., 240~247, 248~255 의 범위를 가진다)
+(2)번에서 8을 2회 뺏다면 옥텟2의 값인 1을 확인한다. 이 값이 (4)번 와일드카드의 범위 어디에 포함되어있는지 알아내면 끝이다.
+(0회 일경우=옥텟4, 1회 일경우=옥텟3, 2회 일경우=옥텟2, 3회일 경우 = 옥텟1 을 보면됨)
+이 예제도 딱봐도 옥텟2의 값인 1이 0~7에 포함된다. 옥텟2는 최소값 0부터 시작하며 최대값은 7이다. 그 아래 옥텟3,옥텟4은 최소값 0부터 시작하며 최대값은 255이다.
+따라서 192.0.0.0 ~ 192.7.255.255
+
+
